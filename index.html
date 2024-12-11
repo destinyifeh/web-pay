@@ -13,9 +13,13 @@
     txn_ref: '12344grtr',
     amount: 10000,
     currency: 566,
+    onCompleteted:paymentCallback,
     mode: 'TEST', // Use 'LIVE' for production
     site_redirect_url: 'https://example.com/payment-response', // Optional, fallback if callback fails
   };
+  function paymentCallback(response) {
+    console.log(response, "restooooo");
+}
         function initializeWebpay() {
           window.webpayCheckout(paymentRequest);
         }
