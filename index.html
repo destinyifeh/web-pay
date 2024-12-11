@@ -1,0 +1,27 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Destooooo</title>
+
+    <script>
+  const paymentRequest = {
+    merchant_code: 'MX6072',
+    pay_item_id: '9405967',
+    txn_ref: '12344grtr',
+    amount: 10000,
+    currency: 566,
+    mode: 'TEST', // Use 'LIVE' for production
+    site_redirect_url: 'https://example.com/payment-response', // Optional, fallback if callback fails
+  };
+    window.webpayCheckout(paymentRequest);
+        
+ </script>
+</head>
+<body>
+    <script src="https://newwebpay.qa.interswitchng.com/inline-checkout.js" ></script>
+
+</body>
+</html>
