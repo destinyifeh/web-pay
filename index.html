@@ -16,12 +16,13 @@
     mode: 'TEST', // Use 'LIVE' for production
     site_redirect_url: 'https://example.com/payment-response', // Optional, fallback if callback fails
   };
-    window.webpayCheckout(paymentRequest);
-        
- </script>
+        function initializeWebpay() {
+          window.webpayCheckout(paymentRequest);
+        }
+      </script>
 </head>
 <body>
-    <script src="https://newwebpay.qa.interswitchng.com/inline-checkout.js" ></script>
+    <script src="https://newwebpay.qa.interswitchng.com/inline-checkout.js" onload="initializeWebpay()"></script>
 
 </body>
 </html>
