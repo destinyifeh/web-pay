@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Deletion Request</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 400px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            margin: auto;
+        }
+        h2 {
+            /* color: #d9534f; */
+            color:#556B2F
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+            text-align: left;
+        }
+        input, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            /* background-color: #d9534f; */
+            background-color: #556B2F;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 15px;
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        button.enabled {
+            opacity: 1;
+            cursor: pointer;
+        }
+        button:hover:enabled {
+            /* background-color: #c9302c; */
+            background-color: #556B2F;
+
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Account Deletion Request</h2>
+        <p>If you wish to delete your Bukinz account, please fill out the form below.</p>
+        
+        <form id="deleteAccountForm">
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" name="name" placeholder="Your Bukinz business name or full name" oninput="validateForm()" required>
+
+            <label for="email">Email Address:</label>
+            <input type="email" id="email" name="email" placeholder="Your Bukinz account email address" oninput="validateForm()" required>
+
+            <label for="reason">Reason for Deletion (Optional):</label>
+            <textarea id="reason" name="reason" rows="4"></textarea>
+
+            <button type="submit" id="submitBtn" disabled>Submit Request</button>
+        </form>
+    </div>
+
+    <script>
+        function validateForm() {
+            const name = document.getElementById("name").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const submitBtn = document.getElementById("submitBtn");
+
+        
+            if (name && email) {
+                submitBtn.disabled = false;
+                submitBtn.classList.add("enabled");
+            } else {
+                submitBtn.disabled = true;
+                submitBtn.classList.remove("enabled");
+            }
+        }
+
+
+        function formReset(){
+            const nameInput = document.getElementById("name");
+             const emailInput = document.getElementById("email");
+            const reasonInput = document.getElementById("reason");
+            const submitBtn = document.getElementById("submitBtn");
+
+            nameInput.value = "";
+            emailInput.value = "";
+            reasonInput.value = "";
+            submitBtn.textContent = "Submit Request";
+            submitBtn.disabled = true;
+            submitBtn.classList.remove("enabled");
+
+            nameInput.disabled = false;
+           emailInput.disabled = false;
+           reasonInput.disabled = false;
+           submitBtn.disabled = false;
+        };
+
+        function onSubmitting(){
+            const nameInput = document.getElementById("name");
+             const emailInput = document.getElementById("email");
+            const reasonInput = document.getElementById("reason");
+            const submitBtn = document.getElementById("submitBtn");
+
+
+            submitBtn.disabled = true;
+            submitBtn.classList.remove("enabled");
+            submitBtn.textContent="Submitting..."
+
+            nameInput.disabled = true;
+           emailInput.disabled = true;
+           reasonInput.disabled = true;
+
+
+        }
+
+        
+
+        document.getElementById("deleteAccountForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+            
+
+           const nameInput = document.getElementById("name");
+             const emailInput = document.getElementById("email");
+            const reasonInput = document.getElementById("reason");
+            const submitBtn = document.getElementById("submitBtn");
+
+            const requestData = {
+            name: nameInput.value.trim(),
+            email: emailInput.value.trim(),
+            reason: reasonInput.value.trim()
+          };
+            console.log(requestData, "Dez requestData...")
+            onSubmitting()   
+          
+            try {
+                const response = await fetch("https://bukinz/delete-account", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(requestData)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert("Account deletion request submitted successfully.");
+                    formReset()
+                   
+                } else {
+                    alert("Error: " + result.message || "Oops! Something went wrong.");
+                   
+                }
+            } catch (error) {
+             
+                alert("Something went wrong. Please try again later.");
+            }
+        });
+    </script>
+
+</body>
+</html>
